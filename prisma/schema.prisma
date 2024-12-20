@@ -37,24 +37,9 @@ model Product {
   productName String
   description String
   productImage String?
-  
-  category Category @relation(fields: [categoryId], references: [id])
-  categoryId Int
 
   createdAt DateTime @default(now())
   updateAt DateTime @default(now()) @updatedAt
 
   @@map("product")
-}
-
-model Category {
-  id Int @id @default(autoincrement())
-  categoryName String
-
-  product Product[]
-
-  createdAt DateTime @default(now())
-  updateAt DateTime @default(now()) @updatedAt
-
-  @@map("category")
 }
