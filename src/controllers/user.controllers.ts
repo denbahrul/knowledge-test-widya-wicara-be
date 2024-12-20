@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { RegisterDTO } from "../dto/user.dto";
+import { LoginDTO, RegisterDTO } from "../dto/user.dto";
 import userServices from "../services/user.services";
-import { RegisterSchema } from "../utils/schemas/user.schema";
+import { LoginSchema, RegisterSchema } from "../utils/schemas/user.schema";
 
 class UserControllers {
   async register(req: Request, res: Response) {
@@ -26,7 +26,12 @@ class UserControllers {
   }
   async login(req: Request, res: Response) {
     try {
-      res.json({});
+      const loginBody = await LoginSchema.validateAsync(req.body as LoginDTO);
+      const data = await userServices.login(loginBody);
+      res.json({
+        message: "User logged succesfully",
+        data,
+      });
     } catch (error) {
       console.log(error);
 

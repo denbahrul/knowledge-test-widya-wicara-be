@@ -1,6 +1,7 @@
 import { LoginDTO, RegisterDTO } from "../dto/user.dto";
 import userRepositories from "../repositories/user.repositories";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 class UserServices {
   async register(registerInfo: RegisterDTO) {
@@ -22,7 +23,35 @@ class UserServices {
 
     return createdUser;
   }
-  async login(loginInfo: LoginDTO) {}
+  async login(loginInfo: LoginDTO) {
+    const user = await userRepositories.findUserByEmail(loginInfo.email);
+
+    if (!user) {
+      throw {
+        status: "fail",
+        message: "Incorrect Email / Password",
+      };
+    }
+
+    const isPasswordValid = await bcrypt.compare(loginInfo.password, user.password);
+
+    if (!isPasswordValid) {
+      throw {
+        status: "fail",
+        message: "Incorrect Email / Password",
+      };
+    }
+
+    const { password, ...userToSign } = user;
+    const screetKey = process.env.JWT_SCREET_KEY as string;
+    const accessToken = jwt.sign(userToSign, screetKey);
+
+    return {
+      user: userToSign,
+      accessToken,
+    };
+  }
+
   async getUserProfile(userId: number) {}
 }
 
