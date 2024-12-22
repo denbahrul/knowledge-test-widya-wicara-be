@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import { router } from "./routes";
+import cors from "cors";
 
 dotenv.config();
 
@@ -9,6 +10,7 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Welcome to TECH SPACE API, this API is for Widya Wicara Knowledge Test");

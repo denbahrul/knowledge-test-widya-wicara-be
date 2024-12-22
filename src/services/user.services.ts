@@ -1,3 +1,4 @@
+import { UpdateProfileDTO } from "../dto/profile.dto";
 import { LoginDTO, RegisterDTO } from "../dto/user.dto";
 import userRepositories from "../repositories/user.repositories";
 import bcrypt from "bcrypt";
@@ -52,7 +53,26 @@ class UserServices {
     };
   }
 
-  async getUserProfile(userId: number) {}
+  async getUserLogged(userId: number) {
+    const user = await userRepositories.findUserById(userId);
+
+    if (!user) {
+      throw {
+        status: "fail",
+        message: "Invalid user token",
+      };
+    }
+
+    return user;
+  }
+
+  async getUserProfile(userId: number) {
+    return await userRepositories.findUserById(userId);
+  }
+
+  async updateProfile(userId: number, body: UpdateProfileDTO) {
+    return await userRepositories.update(userId, body);
+  }
 }
 
 export default new UserServices();

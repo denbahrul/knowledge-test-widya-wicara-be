@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
 import { LoginDTO, RegisterDTO } from "../dto/user.dto";
 import userServices from "../services/user.services";
-import { LoginSchema, RegisterSchema } from "../utils/schemas/user.schema";
+import { LoginSchema, RegisterSchema, UpdateProfileSchema } from "../utils/schemas/user.schema";
+import { UpdateProfileDTO } from "../dto/profile.dto";
+import cloudinaryServices from "../services/cloudinary.services";
 
 class UserControllers {
   async register(req: Request, res: Response) {
@@ -41,9 +43,57 @@ class UserControllers {
       });
     }
   }
+
+  async getUserLogged(req: Request, res: Response) {
+    try {
+      const user = res.locals.user;
+      const data = await userServices.getUserLogged(user.id);
+      res.json({
+        ...data,
+      });
+    } catch (error) {
+      console.log(error);
+      const err = error as Error;
+      res.status(500).json({
+        message: err.message,
+      });
+    }
+  }
+
   async getUserProfile(req: Request, res: Response) {
     try {
-      res.json({});
+      const user = res.locals.user;
+      const data = await userServices.getUserLogged(user.id);
+      res.json({
+        ...data,
+      });
+    } catch (error) {
+      console.log(error);
+
+      const err = error as Error;
+      res.status(500).json({
+        message: err.message,
+      });
+    }
+  }
+
+  async updateProfile(req: Request, res: Response) {
+    try {
+      const user = res.locals.user;
+      const body: UpdateProfileDTO = req.body;
+      const fileUpload = req.file;
+
+      if (fileUpload) {
+        const image = await cloudinaryServices.upload(fileUpload as Express.Multer.File);
+        body.profilePhoto = image.secure_url;
+      }
+
+      const value = await UpdateProfileSchema.validateAsync(body);
+      const data = await userServices.updateProfile(user.id, value);
+      res.json({
+        message: "Profile was updated",
+        data,
+      });
     } catch (error) {
       console.log(error);
 
