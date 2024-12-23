@@ -7,7 +7,7 @@ const doc = {
     title: "Tech Space",
     description: "API Documentation for Tech Space (WIdya Wicara Knowledge Test)",
   },
-  servers: [{ url: "localhost:" }],
+  servers: [{ url: "localhost:3000" }],
   components: {
     securitySchemes: {
       bearerAuth: {
