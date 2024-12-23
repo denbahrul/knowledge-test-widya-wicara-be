@@ -19,7 +19,7 @@ Before starting, make sure you have the following installed on your machine:
 Clone the repository from GitHub:
 
 ```bash
-git clone https://github.com/<your-username>/<your-repository>.git
+git clone https://github.com/denbahrul/knowledge-test-widya-wicara-be.git
 ```
 
 ## **Install Dependencies**
