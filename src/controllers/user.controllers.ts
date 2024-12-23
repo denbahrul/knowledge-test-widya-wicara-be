@@ -7,6 +7,18 @@ import cloudinaryServices from "../services/cloudinary.services";
 
 class UserControllers {
   async register(req: Request, res: Response) {
+    // #swagger.tags = ['Auth']
+    /*  #swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/registerSchema"
+                    }  
+                }
+            }
+        } 
+    */
     try {
       const registerBody = req.body as RegisterDTO;
       const value = await RegisterSchema.validateAsync(registerBody);
@@ -27,6 +39,18 @@ class UserControllers {
     }
   }
   async login(req: Request, res: Response) {
+    // #swagger.tags = ['Auth']
+    /*  #swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/loginSchema"
+                    }  
+                }
+            }
+        } 
+    */
     try {
       const loginBody = await LoginSchema.validateAsync(req.body as LoginDTO);
       const data = await userServices.login(loginBody);
@@ -45,6 +69,8 @@ class UserControllers {
   }
 
   async getUserLogged(req: Request, res: Response) {
+    // #swagger.tags = ['Auth']
+    // #swagger.summary = 'Get user logged in'
     try {
       const user = res.locals.user;
       const data = await userServices.getUserLogged(user.id);
@@ -61,6 +87,8 @@ class UserControllers {
   }
 
   async getUserProfile(req: Request, res: Response) {
+    // #swagger.tags = ['Users']
+    // #swagger.summary = 'Get profile user'
     try {
       const user = res.locals.user;
       const data = await userServices.getUserLogged(user.id);
@@ -78,6 +106,19 @@ class UserControllers {
   }
 
   async updateProfile(req: Request, res: Response) {
+    // #swagger.tags = ['Users']
+    // #swagger.summary = 'Update User'
+    /*  #swagger.requestBody = {
+                required: true,
+                content: {
+                    "multipart/form-data": {
+                        schema: {
+                            $ref: "#/components/schemas/updateUserSchema"
+                        }  
+                    }
+                }
+            } 
+      */
     try {
       const user = res.locals.user;
       const body: UpdateProfileDTO = req.body;

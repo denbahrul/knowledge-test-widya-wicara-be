@@ -6,6 +6,8 @@ import { CreateProductSchema, UpdateProductSchema } from "../utils/schemas/produ
 
 class ProductControllers {
   async findAll(req: Request, res: Response) {
+    // #swagger.tags = ['Product']
+    // #swagger.summary = 'Get all product'
     try {
       const data = await productServices.findAll();
       res.json({
@@ -22,6 +24,8 @@ class ProductControllers {
   }
 
   async findById(req: Request, res: Response) {
+    // #swagger.tags = ['Product']
+    // #swagger.summary = 'Get a product by params id'
     try {
       const productId = +req.params.id;
       const data = await productServices.findById(productId);
@@ -39,6 +43,19 @@ class ProductControllers {
   }
 
   async create(req: Request, res: Response) {
+    // #swagger.tags = ['Product']
+    // #swagger.summary = 'Update Product'
+    /*  #swagger.requestBody = {
+                required: true,
+                content: {
+                    "multipart/form-data": {
+                        schema: {
+                            $ref: "#/components/schemas/createProductSchema"
+                        }  
+                    }
+                }
+            } 
+      */
     try {
       const body: CreateProductDTO = req.body;
       const fileUpload = req.file;
@@ -65,6 +82,19 @@ class ProductControllers {
   }
 
   async update(req: Request, res: Response) {
+    // #swagger.tags = ['Product']
+    // #swagger.summary = 'UpdateProduct'
+    /*  #swagger.requestBody = {
+                required: true,
+                content: {
+                    "multipart/form-data": {
+                        schema: {
+                            $ref: "#/components/schemas/updateProductSchema"
+                        }  
+                    }
+                }
+            } 
+      */
     try {
       const productId = +req.params.id;
       const body: UpdateProductDTO = req.body;
@@ -92,6 +122,8 @@ class ProductControllers {
   }
 
   async delete(req: Request, res: Response) {
+    // #swagger.tags = ['Product']
+    // #swagger.summary = 'Delete product'
     try {
       const productId = +req.params.id;
       const data = await productServices.delete(productId);

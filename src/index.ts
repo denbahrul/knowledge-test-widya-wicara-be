@@ -2,6 +2,8 @@ import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import { router } from "./routes";
 import cors from "cors";
+import swaggerUI from "swagger-ui-express";
+import swaggerDocument from "../swagger/swagger-output.json";
 
 dotenv.config();
 
@@ -17,6 +19,17 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/v1", router);
+app.use(
+  "/api-docs",
+  swaggerUI.serve,
+  swaggerUI.setup(swaggerDocument, {
+    explorer: true,
+    swaggerOptions: {
+      persistAuthorization: true,
+      displayRequestDuration: true,
+    },
+  })
+);
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
