@@ -49,3 +49,7 @@ npm run dev
 ```bash
 yarn run dev
 ```
+
+## **API Documentation**
+
+Access the API documentation at `http://localhost:3000/api-docs`
